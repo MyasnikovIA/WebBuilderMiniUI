@@ -1,0 +1,5 @@
+   .is_select_element_ide {
+        /*border: dotted black;*/ /* Параметры границы */
+        background: rgba(240, 240, 240, 0.5); /* Цвет фона */
+        /*position: relative;*/
+   }

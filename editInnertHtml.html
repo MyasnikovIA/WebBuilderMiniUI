@@ -1,0 +1,109 @@
+<html>
+<head>
+    <title>员工面板</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="scripts/boot.js" type="text/javascript"></script>
+
+
+	<!-- Loading css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/theme/material-ocean.css"></link>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/addon/hint/show-hint.css">
+
+    <!-- Loading js -->
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/mode/xml/xml.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/mode/javascript/javascript.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/mode/css/css.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/mode/htmlmixed/htmlmixed.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/addon/edit/matchbrackets.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/addon/hint/show-hint.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/addon/hint/javascript-hint.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/addon/hint/html-hint.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/addon/hint/xml-hint.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/addon/hint/css-hint.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/keymap/sublime.js"></script>
+
+</head>
+<body>
+    <form id="form1" method="post">
+        <textarea id="editor">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Editor&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Welcome to &lt;span&gt;HTML editor&lt;/span&gt;&lt;/h1&gt;&lt;br&gt;
+&lt;h2&gt;jQueryScript.Net&lt;/h2&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+        </textarea>
+        <div style="text-align:center;padding:10px;">
+            <a class="mini-button" onclick="onOk" style="width:60px;margin-right:20px;">Ok</a>
+            <a class="mini-button" onclick="onCancel" style="width:60px;">Cancel</a>
+        </div>
+    </form>
+    <script>
+     var attrHide={};
+     var classHide=[];
+     var clickElement = null;
+     var isChangeCode = false;
+
+     var config = {
+        mode: "text/html",
+        extraKeys: {"Ctrl-Space": "autocomplete"},
+        lineNumbers: true,
+        keyMap:"sublime",
+        tabSize:10,
+    };
+    // initialize editor
+    var editor = CodeMirror.fromTextArea(document.getElementById('editor'),config);
+    editor.setOption("theme", "material-ocean");
+
+        mini.parse();
+        var form = new mini.Form("form1");
+        function SaveData() {
+            var o = form.getData();
+            form.validate();
+            if (form.isValid() == false) return;
+            var json = mini.encode([o]);
+        }
+
+        function SetData(data) {
+           clickElement = data.clickElement;
+           data.clickElement.classList.remove('is_select_element_ide');
+           if (data.clickElement.classList.length === 0) {
+               data.clickElement.removeAttribute('class');
+           }
+           classHide.push('is_select_element_ide');
+           editor.setValue(data.clickElement.outerHTML)
+           isChangeCode = false;
+           editor.on('change', function(cMirror){
+               isChangeCode = true;
+           });
+        }
+        function GetData() {
+            clickElement.outerHTML = editor.getValue();
+            clickElement.classList.add('is_select_element_ide');
+            return {clickElement: clickElement};
+        }
+        function CloseWindow(action) {
+            if (window.CloseOwnerWindow) {
+                return window.CloseOwnerWindow(action);
+            } else {
+                window.close();
+            }
+        }
+        function onOk(e) {
+             CloseWindow("ok");
+        }
+        function onCancel(e) {
+            CloseWindow("cancel");
+        }
+    </script>
+</body>
+</html>

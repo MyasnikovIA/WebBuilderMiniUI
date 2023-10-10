@@ -1,0 +1,699 @@
+<html>
+    <head>
+        <title>Layout</title>
+        <script src="scripts/boot.js" type="text/javascript"></script>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"/>
+    </head>
+  <style>
+      /*
+        <link rel="stylesheet" href="app_ide.css"/>
+       https://github.com/xsls/jquery-miniui/tree/master/src/main/webapp
+   .is_select_element_ide {
+        border: 4px double black; /* Параметры границы */
+        background: #fc3; /* Цвет фона */
+        padding: 10px; /* Поля вокруг текста */
+   }
+       */
+  </style>
+<body>
+    <!--
+    <div id="layout1" class="mini-layout" style="width:600px;height:400px;"  borderStyle="border:solid 1px #aaa;">
+    -->
+
+    <div id="layout1" class="mini-layout" borderStyle="border:solid 1px #aaa;"  style="width:100%;height:100%">
+
+        <!--  Верхнее меню  Toolbar -->
+        <div region="north" height="36" showHeader="false">
+            <div id="toolbar1" class="mini-toolbar" style="padding:2px;">
+                <table style="width:100%;">
+                    <tr>
+                    <td style="width:100%;">
+                        <a class="mini-menubutton" plain="true" menu="#fileMenu">File</a>
+                        <a class="mini-menubutton" plain="true" menu="#editMenu">Edit</a>
+                        <a class="mini-menubutton" plain="true" onclick="debugger">debugger</a>
+                        <!--
+                        <a class="mini-button" iconCls="icon-addfolder" plain="true" enabled="true">Edit</a>
+                        <a class="mini-button" iconCls="icon-edit" plain="true">修改</a>
+                        <a class="mini-button" iconCls="icon-remove" plain="true">删除</a>
+                        <span class="separator"></span>
+                        <a class="mini-button" iconCls="icon-reload" plain="true">刷新</a>
+                        <a class="mini-button" iconCls="icon-download" plain="true">下载</a>
+                        -->
+                    </td>
+                        <!--
+                    <td style="white-space:nowrap;"><label style="font-family:Verdana;">Filter by: </label>
+                        <input class="mini-textbox" />
+                        </td>
+                    </tr>
+                    -->
+                </table>
+            </div>
+        </div>
+
+
+        <!--
+        <div title="south" region="south" showSplit="false" showHeader="true" height="80" showSplitIcon="true" >
+            south
+            Терминал
+        </div>
+        -->
+
+
+        <div region="west" width="300" expanded="true" showSplitIcon="true" id="panelWest">
+            <div id="layout2" class="mini-layout" borderStyle="border:solid 1px #aaa;" style="width:100%;height:100%">
+                <div region="north" height="300" showHeader="false"  showSplit="true" showHeader="true">
+                    <input class="mini-textbox"  width="100%" id="foundTreeDom" onenter="onKeyEnterFoundTreeDom"/>
+                    <ul id="tree1"
+                        class="mini-tree"
+                        height="90%"
+                        showTreeIcon="true"
+                        textField="text"
+                        idField="id"
+                        parentField="pid"
+                        resultAsTree="false"
+                        showRadioButton="false"
+                        showFolderCheckBox="false"
+                        expandOnLoad="true"
+                        allowDrag="true"
+                        allowDrop="true"
+                        onbeforenodeselect="onBeforeNodeSelectDom"
+                        onbeforedrop="onBeforeDropDom"
+                        ondragstart="onDragStartDom"
+                        >
+                    </ul>
+                </div>
+                <div>
+                    <input class="mini-textbox"  width="100%" id="foundPropElement"/>
+                    <!-- Дерево файлов проекта -->
+                     <ul id="tree3"
+                        class="mini-tree"
+                        height="90%"
+                        showTreeIcon="true"
+                        textField="text"
+                        idField="id"
+                        parentField="pid"
+                        resultAsTree="false"
+                        showRadioButton="false"
+                        showFolderCheckBox="false"
+                        expandOnLoad="true"
+                        allowDrag="true"
+                        allowDrop="true"
+                        onbeforenodeselect="onBeforeNodeSelectFile"
+                        onbeforedrop="onBeforeDropFile"
+                        ondragstart="onDragStartFile"
+                        >
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div title="" region="east" title="Component" showCloseButton="false" showSplitIcon="true" width="300" id="iframeNode">
+            <input class="mini-textbox" width="100%" id="foundTreeComponent" onenter="onKeyEnterFoundTreeComponent"/>
+            <ul id="tree2"
+                class="mini-tree"
+                url="component.txt"
+                height="90%"
+                showTreeIcon="true"
+                textField="text"
+                idField="id"
+                parentField="pid"
+                resultAsTree="false"
+                onbeforenodeselect="onBeforeNodeSelectComponent"
+                showRadioButton="false"
+                showFolderCheckBox="false"
+                expandOnLoad="true"
+                >
+            </ul>
+        </div>
+
+        <!--
+        <div title="center" region="center"  ></div>
+        -->
+        <div title="center" region="center" style="text-align: center;">
+            <iframe id="iframeNodeDiv"  contenteditable="true"  width="99%" height="99%">
+            </iframe>
+        </div>
+
+
+
+    </div>
+
+    <!--menu-->
+    <ul id="fileMenu" class="mini-menu" style="display:none;">
+        <li>
+		    <span >New</span>
+		    <ul>
+		        <li iconCls="icon-new" >Project</li>
+                <li class="separator"></li>
+                <li iconCls="icon-add" >Form</li>
+			    <li iconCls="icon-edit" >Save</li>
+	            <li iconCls="icon-remove" >Remov form</li>
+		    </ul>
+	    </li>
+        <li class="separator"></li>
+	    <li iconCls="icon-open" >Clear</li>
+    </ul>
+
+    <ul id="editMenu" class="mini-menu" style="display:none;">
+        <li onclick="setTextEditDesigner();" >text edit</li>
+    </ul>
+
+
+
+<ul id="contextMenuElement" class="mini-contextmenu" >
+    <li>
+		<span iconCls="icon-edit"  >Edit</span>
+		<ul>
+		    <li iconCls="icon-new" onclick="openInnerHTML();">InnerHTML</li>
+            <li class="separator"></li>
+            <li onclick="onOpenEditWindow">Edit element</li>
+            <li onclick="onOpenPropertyWindow">Property element</li>
+			<li onclick="onOpenStyleWindow">Style element</li>
+			<li onclick="onOpenClassWindow">Edit class list</li>
+			<li onclick="onOpenEventWindow">Edit event</li>
+		</ul>
+	</li>
+    <li class="separator"></li>
+    <li onclick="setTextEditDesigner();">Edit text</li>
+    <li onclick="pastElementFromDom();">Paste</li>
+	<li onclick="copyElementFromDom();">Copy</li>
+	<li iconCls="icon-remove" onclick="deleteElementFromDom();">Delete</li>
+</ul>
+
+
+
+    <script type="text/javascript">
+        var ContentEditorDocumeIframe;
+        var ContentEditorDocume;
+        var copyElement = null;
+        var clickElement = null;
+        mini.parse();
+        var layout = mini.get("layout1");
+        var layout2 = mini.get("layout2");
+        var gridProperty = mini.get("propertyGrid");
+
+
+        function hideHeader() {
+            layout.updateRegion("north", { visible: false });
+        }
+        function showHeader() {
+            layout.updateRegion("north", { visible: true });
+        }
+        function collapsePanel() {
+            layout.updateRegion("east", { expanded: false });
+        }
+        function expandPanel() {
+            layout.updateRegion("east", { expanded: true });
+        }
+
+        window.onload = function() {
+            ContentEditorDocumeIframe = document.getElementById('iframeNodeDiv');
+            ContentEditorDocume = (ContentEditorDocumeIframe.contentWindow) ? ContentEditorDocumeIframe.contentWindow : (ContentEditorDocumeIframe.contentDocument.document) ? ContentEditorDocumeIframe.contentDocument.document : ContentEditorDocumeIframe.contentDocument;
+            ContentEditorDocume.document.designMode = 'off';
+            ContentEditorDocumeIframe.src = "";
+            ContentEditorDocumeIframe.onload = function() {
+                ContentEditorDocume = (ContentEditorDocumeIframe.contentWindow) ? ContentEditorDocumeIframe.contentWindow : (ContentEditorDocumeIframe.contentDocument.document) ? ContentEditorDocumeIframe.contentDocument.document : ContentEditorDocumeIframe.contentDocument;
+                ContentEditorDocume.document.designMode = 'off';
+                ContentEditorDocume.document.write('<div>HELLO_WORLD</div>');
+
+                var style_ide = document.createElement('link');
+                style_ide.setAttribute('delet_tag','1');
+                style_ide.href = 'app_ide.css';
+                style_ide.rel = 'stylesheet';
+                ContentEditorDocume.document.head.appendChild(style_ide);
+                ContentEditorDocume.onmouseup = function(event) {
+                    clickElement = event.toElement;
+                    if (clickElement.tagName === 'HTML') {
+                        return;
+                    }
+                    if (newElementDom != null) {
+                         var addEl = newElementDom.cloneNode(true);
+                         clickElement.appendChild(addEl);
+                         rebuildDomTree();
+                         clickElement = addEl;
+                         newElementDom = null;
+                         var tree2 = mini.get('tree2');
+                         tree2.selectNode(null);
+                    }
+                    var idTree = clickElement.getAttribute('ide_tree_id');
+                    var tree1 = mini.get('tree1');
+                    tree1.selectNode(idTree);
+                    tree1.focusRow()
+                    clearSelectClass();
+                    clickElement.classList.add('is_select_element_ide')
+                    clickElement.addEventListener('keydown', keyEvent, false);
+                    var contextMenuElement = mini.get("contextMenuElement");
+                    contextMenuElement.hide();
+                    $(clickElement).bind("contextmenu", function (e) {
+                        mini.get("panelWest");
+                        var contextMenuElement = mini.get("contextMenuElement");
+                        var widthWestPanel = parseInt(document.getElementById('west').style.width);
+                        var heightContextMainPanel = parseInt(document.getElementById('contextMenuElement').getBoundingClientRect().height)/3;
+                        contextMenuElement.showAtPos(e.pageX + widthWestPanel, e.pageY + heightContextMainPanel );
+                        return false;
+                    });
+                }
+                ContentEditorDocume.onkeyup = function() {
+                }
+                rebuildDomTree();
+            }
+        };
+
+        // переключить в режим  редактирования
+        function setTextEditDesigner() {
+            if (ContentEditorDocume.document.designMode === 'on') {
+                ContentEditorDocume.document.designMode = 'off';
+            } else {
+                ContentEditorDocume.document.designMode = 'on';
+            };
+        }
+
+
+
+        function rebuildDomTree() {
+            var data = getDOMtree();
+            var tree1 = mini.get("tree1");
+            tree1.loadData(data);
+            tree1.selectNode(selectNodeId);
+        };
+
+        // перестройка  дома HTML дерева
+        var getDOMtree = function() {
+            var TmpElementSrc = ContentEditorDocume.document.getElementsByTagName('html')[0];
+            res = []
+            ReadHtmlElement(TmpElementSrc, res)
+            return res;
+        }
+
+
+        // Строим дерево HTML страницы
+        var ReadHtmlElementId = 0;
+        var ReadHtmlElement = function(elems, arr) {
+            if (('' + elems) == '[object HTMLBRElement]') {
+                return;
+            } // пропускаем <br/>
+            if (('' + elems.tagName) === 'undefined') {
+                return;
+            } // пропускаем  неизвестные тэги
+            if (elems.getAttribute("delet_tag") != null) {
+                return;
+            } // пропускаем тэг с атрибутом DeletTag
+            var sub = {};
+            if (elems.tagName != 'HTML') {
+                ReadHtmlElementId++;
+                sub["id"] = "ThreeIdElement_" + ReadHtmlElementId;
+            }
+            sub["text"] = '' + elems['tagName'];
+            if (typeof elems.getAttribute === 'function') {
+                if (elems.getAttribute("cmptype") != null) {
+                    sub["text"] += " (" + elems.getAttribute("cmptype") + ")";
+                }
+            }
+            elems.setAttribute('ide_tree_id', sub['id']);
+            sub["ObjectElement"] = elems;
+            elems.moving = true;
+            arr.push(sub);
+            if (selectNodeId == null) {
+                selectNodeId = sub["id"];
+                selectObjectElement = elems;
+            }
+            sub['children'] = [];
+            sub['isLeaf'] = true;
+            console.log("(elems.childNodes)", (elems.childNodes))
+            // обработка детей
+            if (elems.childNodes) {
+                if (elems.childNodes.length > 0) {
+                    for (var i = 0; i < elems.childNodes.length; i++) {
+                        var SubElemt = elems.childNodes[i]
+                        ReadHtmlElement(SubElemt, sub["children"]);
+                    }
+                } else {
+                   var content = document.createTextNode("<YOUR_CONTENT>");
+                   sub['children'].push(content)
+                }
+            }
+        }
+
+         var selectNodeId = null;
+         var selectObjectElement = null;
+         function onBeforeNodeSelectDom(e) {
+            var tree = e.sender;
+            var node = e.node;
+            if (!node['id']) {
+               e.cancel = true;
+               return;
+            }
+            selectNodeId = node['id'];
+            selectObjectElement = node['ObjectElement'];
+            if (newElementDom != null) {
+                 var addEl = newElementDom.cloneNode(true);
+                 selectObjectElement.appendChild(addEl);
+                 rebuildDomTree();
+                 clickElement = addEl;
+                 newElementDom = null;
+                 var tree2 = mini.get('tree2');
+                 tree2.selectNode(null);
+            }
+            clearSelectClass();
+            selectObjectElement.classList.add('is_select_element_ide')
+            selectObjectElement.addEventListener('keydown', keyEvent, false);
+        };
+
+
+        var newElementDom = null;
+        function onBeforeNodeSelectComponent(event) {
+            var tree = event.sender;
+            var node = event.node;
+            if (tree.hasChildren(node)) {
+                event.cancel = true;
+                return;
+            }
+            newElementDom = document.createElement(node['Component']['tagName']);
+            newElementDom.innerText = node['Component']['innerText'];
+        };
+
+
+        function clearSelectClass() {
+            var elementsSrc = ContentEditorDocume.document.getElementsByTagName('html')[0].querySelectorAll('.is_select_element_ide');
+            for (var i = 0; i < elementsSrc.length; i++) {
+                if (elementsSrc[i].classList.contains('is_select_element_ide')) {
+                    elementsSrc[i].removeEventListener('keydown', keyEvent); // удаление нажатия кнопок на выбранном элементе
+                    elementsSrc[i].classList.remove("is_select_element_ide");
+                    if (elementsSrc[i].classList.length === 0) {
+                        elementsSrc[i].removeAttribute('class');
+                    }
+                }
+            }
+        }
+
+        function addStyleText(styles) {
+            var css = document.createElement('style');
+            css.type = 'text/css';
+
+            if (css.styleSheet)
+                css.styleSheet.cssText = styles;
+            else
+                css.appendChild(document.createTextNode(styles));
+            ContentEditorDocume.document.head.appendChild(css);
+        }
+
+        function onKeyEnterFoundTreeDom(event) {
+            var tree1 = mini.get('tree1');
+            var key = mini.get('foundTreeDom').getValue();
+            if (key == '') {
+                tree1.clearFilter();
+            } else {
+                key = key.toLowerCase();
+                tree1.filter(function (node) {
+                    // console.log(node)
+                    var text = node.text ? node.text.toLowerCase() : "";
+                    if (text.indexOf(key) != -1) {
+                        return true;
+                    }
+                });
+            }
+        }
+
+        function deleteElementFromDom() {
+            var tree1 = mini.get('tree1');
+            var node = tree1.getSelectedNode();
+            if (node.ObjectElement.tagName === 'BODY' || node.ObjectElement.tagName === 'HEAD') {
+               return;
+            }
+            if (node['ObjectElement']) {
+                 node['ObjectElement'].remove();
+            }
+            // tree1.removeNode(node);
+            rebuildDomTree();
+        };
+
+        function pastElementFromDom() {
+            if (copyElement == null) {
+                return;
+            }
+            clickElement.appendChild(copyElement.cloneNode(true));
+            rebuildDomTree();
+        };
+
+        function copyElementFromDom() {
+            if (clickElement.tagName === 'BODY' || clickElement.tagName === 'HEAD') {
+               return;
+            }
+            copyElement = clickElement.cloneNode(true);
+        };
+
+        function openInnerHTML() {
+              // editInnertHtml.html
+              // clickElement
+              var idTree = clickElement.getAttribute('ide_tree_id');
+              var tree1 = mini.get('tree1');
+              tree1.selectNode(idTree);
+              var node = tree1.getSelectedNode();
+
+              debugger
+             /*
+            作者：minmin520
+            链接：https://juejin.cn/post/6844903652293869582
+            来源：稀土掘金
+            著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+            */
+            mini.open({
+                targetWindow: window,        //页面对象。默认是顶级页面。
+                url: 'editInnertHtml.html',  //页面地址
+                title: '',                   //标题
+                iconCls: String,             //标题图标
+                width: '80%',                //宽度
+                height: '40%',               //高度
+                allowResize: false,          //允许尺寸调节
+                allowDrag: Boolean,          //允许拖拽位置
+                showCloseButton: Boolean,    //显示关闭按钮
+                showMaxButton: Boolean,      //显示最大化按钮
+                showModal: true,             //显示遮罩
+                loadOnRefresh: false,        //true每次刷新都激发onload事件
+                onload: function () {
+                    var iframe = this.getIFrameEl();
+                    var data = {clickElement: clickElement};
+                    iframe.contentWindow.SetData(data);
+                },
+                ondestroy: function (action) {
+                    if (action == "ok") {
+                        var iframe = this.getIFrameEl();
+                        var data = iframe.contentWindow.GetData();
+                        data = mini.clone(data);    //必须。克隆数据。
+                        rebuildDomTree();           // перестраиваем Dom дерево
+                        if (window.CloseOwnerWindow) {
+                            return window.CloseOwnerWindow('ok');
+                        } else {
+                            window.close();
+                        }
+                    }
+                }
+            });
+        };
+
+
+        $("#tree1").bind("keydown", function (event) {
+            console.log('#tree1 event.keyCode', event.keyCode);
+            if (event.keyCode == 46) {
+                deleteElementFromDom();
+            }
+        });
+
+        $("#tree1").bind("dblclick", function (event) {
+           rebuildDomTree();
+        });
+
+        function onKeyEnterFoundTreeComponent(event) {
+            var tree2 = mini.get('tree2');
+            var key = mini.get('foundTreeComponent').getValue();
+            if (key == '') {
+                tree2.clearFilter();
+            } else {
+                key = key.toLowerCase();
+                tree2.filter(function (node) {
+                    // console.log(node)
+                    var text = node.text ? node.text.toLowerCase() : "";
+                    if (text.indexOf(key) != -1) {
+                        return true;
+                    }
+                });
+            }
+        }
+
+
+
+
+        var dragElementDom = null;
+        // перемещение Dom элемента по дереву
+        function onBeforeDropDom(event) {
+            var dropNode = event.dropNode;
+            var action = event.action; // 'add', 'before', 'after'
+            var cloneDragElementDom = dragElementDom.ObjectElement.cloneNode(true);
+            var idElement = cloneDragElementDom.getAttribute("ide_tree_id");
+            dragElementDom.ObjectElement.remove()
+            var elementsSrc = ContentEditorDocume.document.getElementsByTagName('html')[0].querySelectorAll('[ide_tree_id="'+idElement+'"]');
+            for (var i = 0; i < elementsSrc.length; i++) {
+                elementsSrc[i].remove();
+            }
+            if (action === 'after') {
+                dropNode.ObjectElement.after(cloneDragElementDom);
+            } else if (action === 'before') {
+                dropNode.ObjectElement.before(cloneDragElementDom);
+            } else if (action === 'add') {
+                dropNode.ObjectElement.appendChild(cloneDragElementDom);
+            }
+        };
+        // выбор Dom элемента для перемещения по дереву
+        function onDragStartDom(event) {
+             dragElementDom = event.node;
+        };
+
+
+        // Обработка нажатий кнопок на выбранном элементе  дизайнера
+        function keyEvent(event) {
+            var selectElement = event.target;
+            console.log(event.keyCode);
+            console.log(event);
+            if (event.keyCode == 46) { //del
+                deleteElementFromDom();
+                rebuildDomTree();
+            } else if ([40, 39, 38, 37].includes(+event.keyCode)) { // управление курсором
+                 var rect = clickElement.getBoundingClientRect();
+                 if (selectElement.style.top === '')  selectElement.style.top = rect.top;
+                 if (selectElement.style.left === '')  selectElement.style.left = rect.left;
+                 if (selectElement.style.width === '')  selectElement.style.width = rect.width;
+                 if (selectElement.style.height === '')  selectElement.style.height = rect.height;
+                 if (selectElement.style.position === '')  selectElement.style.position = 'absolute';
+                 if (event.ctrlKey != true) {
+                    if (event.keyCode === 37) {
+                        var left = parseInt(selectElement.style.left);
+                        left -= 1;
+                        selectElement.style.left = left + 'px';
+                    } else if (event.keyCode === 39) {
+                        var left = parseInt(selectElement.style.left);
+                        left += 1;
+                        selectElement.style.left = left + 'px';
+                    } else if (event.keyCode === 38) {
+                        var top = parseInt(selectElement.style.top);
+                        top -= 1;
+                        selectElement.style.top = top + 'px';
+                    } else if (event.keyCode === 40) {
+                        var top = parseInt(selectElement.style.top);
+                        top += 1;
+                        selectElement.style.top = top + 'px';
+                    }
+                 } else {
+                     if (event.keyCode === 37) {
+                        var width = parseInt(selectElement.style.width);
+                        width -= 1;
+                        selectElement.style.width = width + 'px';
+                     } else if (event.keyCode === 39) {
+                        var width = parseInt(selectElement.style.width);
+                        width += 1;
+                        selectElement.style.width = width + 'px';
+                     } else if (event.keyCode === 38) {
+                        var height = parseInt(selectElement.style.height);
+                        height -= 1;
+                        selectElement.style.height = height + 'px';
+                     } else if (event.keyCode === 40) {
+                        var height = parseInt(selectElement.style.height);
+                        height += 1;
+                        selectElement.style.height = height + 'px';
+                     }
+                 }
+            }
+        }
+
+        // Редактирование HTML атрибутов выбранного элемента
+        function onOpenPropertyWindow() {
+           debugger
+        }
+        // Редактирование HTML  Style атрибута выбранного элемента
+        function onOpenStyleWindow() {
+           debugger
+        }
+        // Редактирование HTML Class(css) атрибута выбранного элемента
+        function onOpenClassWindow() {
+            debugger
+        }
+        // Редактирование HTML событий выбранного элемента
+        function onOpenEventWindow() {
+            debugger
+        }
+        // Редактирование HTML событий выбранного элемента
+        function onOpenEditWindow() {
+           debugger
+        }
+
+
+        // Удалить (перемещение объекта)
+        //ContentEditorDocume.onmousedown = filter;
+        //ContentEditorDocume.ontouchstart = filter;
+        function filter(e) {
+            let target = e.target;
+            if (newElementDom)  return;
+            if (ContentEditorDocume.document.designMode === 'on') return;
+            if (+e.button === 2) return;
+            if (!target.classList.contains("is_select_element_ide")) {
+               return;
+            }
+            target.moving = true;
+            var rect = clickElement.getBoundingClientRect();
+            target.style.left = rect.left;
+            target.style.top = rect.top;
+            target.style.width = rect.width;
+            target.style.height = rect.height;
+           // debugger
+
+            //NOTICE THIS 👇 Check if Mouse events exist on users' device
+            if (e.clientX) {
+              target.oldX = e.clientX; // If they exist then use Mouse input
+              target.oldY = e.clientY;
+            } else {
+              target.oldX = e.touches[0].clientX; // Otherwise use touch input
+              target.oldY = e.touches[0].clientY;
+            }
+            //NOTICE THIS 👆 Since there can be multiple touches, you need to mention which touch to look for, we are using the first touch only in this case
+
+            target.oldLeft = window.getComputedStyle(target).getPropertyValue('left').split('px')[0] * 1;
+            target.oldTop = window.getComputedStyle(target).getPropertyValue('top').split('px')[0] * 1;
+
+            document.onmousemove = dr;
+            //NOTICE THIS 👇
+            document.ontouchmove = dr;
+            //NOTICE THIS 👆
+
+            function dr(event) {
+              event.preventDefault();
+
+              if (!target.moving) {
+                return;
+              }
+              //NOTICE THIS 👇
+              if (event.clientX) {
+                target.distX = event.clientX - target.oldX;
+                target.distY = event.clientY - target.oldY;
+              } else {
+                target.distX = event.touches[0].clientX - target.oldX;
+                target.distY = event.touches[0].clientY - target.oldY;
+              }
+              //NOTICE THIS 👆
+
+              target.style.left = target.oldLeft + target.distX + "px";
+              target.style.top = target.oldTop + target.distY + "px";
+            }
+
+            function endDrag() {
+              target.moving = false;
+            }
+            target.onmouseup = endDrag;
+            //NOTICE THIS 👇
+            target.ontouchend = endDrag;
+            //NOTICE THIS 👆
+        }
+
+    </script>
+</body>
+</html>
