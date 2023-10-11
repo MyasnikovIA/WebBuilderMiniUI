@@ -14425,7 +14425,7 @@ mini.extend(mini.Form, mini.Component, {
         mini.unmask(this.el)
     },
     _maskCls : "mini-mask-loading",
-    loadingMsg : "数据加载中，请稍后...",
+    loadingMsg : "Load...",
     loading : function(a) {
         this.mask(a || this.loadingMsg)
     },

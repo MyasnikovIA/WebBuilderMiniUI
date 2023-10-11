@@ -333,7 +333,7 @@ mini.extend(mini.Form, mini.Component, {
     /**
      * @property {String} [loadingMsg="数据加载中，请稍后..."] 显示加载遮罩层时的提示消息
      */
-    loadingMsg : "数据加载中，请稍后...",
+    loadingMsg : "Load...",
     /**
      * 加载遮罩表单区域
      * @member mini.Form

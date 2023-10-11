@@ -16,7 +16,23 @@
                 editWindowInnerHtml: 'editInnertHtml.html', // окно редактирования компонента
             }
         },
-
+        // Описание элемента "Кнопка"
+        {   id: 'button',
+            text: 'cmpButton',
+            pid: 'forms',
+            Component: {   //  описание создаваемого компонента
+                cmptype: 'button',                   // имя тэга
+                tagName: 'div',                      // имя тэга
+                isCloseTag: true,                    // тег имеет закрывающий элемент
+                isVisibleComponent: true,            // визуальный компонент
+                classList: [],                       // список приваеваемых классов(стиле), добавляется при инициализации компонента (array)
+                attrList: [{cmptype:'button'}],      // список инциируемых атрибутов при создани компонентов
+                styleList: [{left: 10}],     // список инциируемых style при создани компонентов
+                innerText: 'Кнопка',                 // Текстовое содержимое тэга
+                editWindowComponent: 'editHtml.html', // окно редактирования компонента
+                editWindowInnerHtml: 'editInnertHtml2.html', // окно редактирования компонента
+            }
+        },
 
         {id: "ajax", text: "Ajax", pid: "HTML"},
         {id: "json", text: "JSON", pid: "HTML"},

@@ -29,8 +29,7 @@
 
 </head>
 <body>
-    <form id="form1" method="post">
-        <textarea id="editor">
+        <textarea id="editor" rows="15">
 &lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
@@ -42,30 +41,23 @@
 &lt;/body&gt;
 &lt;/html&gt;
         </textarea>
-        <div style="text-align:center;padding:10px;">
-            <a class="mini-button" onclick="onOk" style="width:60px;margin-right:20px;">Ok</a>
-            <a class="mini-button" onclick="onCancel" style="width:60px;">Cancel</a>
-        </div>
-    </form>
     <script>
      var attrHide={};
      var classHide=[];
      var clickElement = null;
      var isChangeCode = false;
 
-     var config = {
-        mode: "text/html",
-        extraKeys: {"Ctrl-Space": "autocomplete"},
-        lineNumbers: true,
-        keyMap:"sublime",
-        tabSize:10,
-    };
-    // initialize editor
-    var editor = CodeMirror.fromTextArea(document.getElementById('editor'),config);
-    editor.setOption("theme", "material-ocean");
-
+         var config = {
+             mode: "text/html",
+             extraKeys: {"Ctrl-Space": "autocomplete"},
+             lineNumbers: true,
+             keyMap:"sublime",
+             tabSize:10,
+        };
+        // initialize editor
+        var editor = CodeMirror.fromTextArea(document.getElementById('editor'),config);
+        editor.setOption("theme", "material-ocean");
         mini.parse();
-        var form = new mini.Form("form1");
         function SaveData() {
             var o = form.getData();
             form.validate();
@@ -90,19 +82,6 @@
             clickElement.outerHTML = editor.getValue();
             clickElement.classList.add('is_select_element_ide');
             return {clickElement: clickElement};
-        }
-        function CloseWindow(action) {
-            if (window.CloseOwnerWindow) {
-                return window.CloseOwnerWindow(action);
-            } else {
-                window.close();
-            }
-        }
-        function onOk(e) {
-             CloseWindow("ok");
-        }
-        function onCancel(e) {
-            CloseWindow("cancel");
         }
     </script>
 </body>
