@@ -2,3 +2,14 @@ https://github.com/ajaxorg/ace-builds
 
 Сервис для улучшения читабельности HTML кода
 https://tools.seo-auditor.com.ru/html-formatter/
+
+
+
+http://www.miniui.com/docs/
+http://www.miniui.com/docs/tutorial/window.html
+http://www.miniui.com/demo/window/window.html
+http://www.miniui.com/demo/window/window.html
+http://www.miniui.com/docs/api/index.html#ui=
+http://www.miniui.com/docs/api/index.html#ui=window
+http://www.miniui.com/docs/tutorial/index.html
+http://www.miniui.com/demo/#src=tree/actiontree.html

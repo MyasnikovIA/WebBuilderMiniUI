@@ -206,10 +206,9 @@
         var copyElement = null;
         var clickElement = null;
         mini.parse();
-        var layout = mini.get("layout1");
-        var layout2 = mini.get("layout2");
-        var gridProperty = mini.get("propertyGrid");
-
+        var layout = mini.get('layout1');
+        var layout2 = mini.get('layout2');
+        var gridProperty = mini.get('propertyGrid');
 
         function hideHeader() {
             layout.updateRegion("north", { visible: false });
@@ -262,7 +261,7 @@
                     var contextMenuElement = mini.get('contextMenuElement');
                     contextMenuElement.hide();
                     $(clickElement).bind('contextmenu', function (e) {
-                        mini.get("panelWest");
+                        mini.get('panelWest');
                         var contextMenuElement = mini.get('contextMenuElement');
                         var widthWestPanel = parseInt(document.getElementById('west').style.width);
                         var heightContextMainPanel = parseInt(document.getElementById('contextMenuElement').getBoundingClientRect().height)/3;
@@ -278,7 +277,7 @@
                 contextMenuDom.hide();
                 var tree1 = mini.get('tree1');
                 $(tree1.el).bind('contextmenu', function (e) {
-                    mini.get("panelWest");
+                    mini.get('panelWest');
                     var contextMenuDom = mini.get('contextMenuDom');
                     contextMenuDom.showAtPos(e.pageX, e.pageY);
                     return false;
@@ -295,7 +294,7 @@
             };
         }
         function rebuildDomTree() {
-            var tree1 = mini.get("tree1");
+            var tree1 = mini.get('tree1');
             tree1.setData([]);
             var data = getDOMtree();
             tree1.loadData(data);
@@ -527,8 +526,6 @@
         }
 
 
-
-
         var dragElementDom = null;
         // перемещение Dom элемента по дереву
         function onBeforeDropDom(event) {
@@ -616,14 +613,13 @@
                 clickElement.style.removeProperty('left');
                 clickElement.style.removeProperty('top');
             } else {
-                 clickElement.style.position = pos_text;
+                clickElement.style.position = pos_text;
             }
         };
 
         // Редактирование HTML событий выбранного элемента
         function onOpenEditWindow() {
             var urlEditPage = 'editHtml.html';
-            // clickElement
             var idTree = clickElement.getAttribute('ide_tree_id');
             var tree1 = mini.get('tree1');
             var tree2 = mini.get('tree2');
@@ -655,7 +651,7 @@
                     }
                }
             }
-            var win = mini.get("win1");
+            var win = mini.get('win1');
             win.setUrl(urlEditPage);
             win.show();
             win.getIFrameEl().onload = function() {
@@ -701,7 +697,7 @@
                     }
                }
             }
-            var win = mini.get("win1");
+            var win = mini.get('win1');
             win.setUrl(urlEditPage);
             mini.setStyle(win.el, 'width: 800px; height: 400px;');
             win.show();
@@ -714,7 +710,7 @@
             }
         };
         function onModalWinClose(action, dom) {
-            var win = mini.get("win1");
+            var win = mini.get('win1');
             if (action === 'ok') {
                  var iframe = win.getIFrameEl();
                  var data = iframe.contentWindow.GetData();
@@ -724,11 +720,43 @@
             win.hide();
             win.el.remove();
         }
-
         function getHtmlConsole() {
-             debugger
-            console.log(ContentEditorDocume.document)
-
+            var TmpElementSrc = ContentEditorDocume.document.getElementsByTagName('html')[0].cloneNode(true);
+            parseDomBeforeSave(TmpElementSrc); // Удаление тэгов и атрибутов используемых IDE
+            console.log(TmpElementSrc.outerHTML);
+        }
+        var parseDomBeforeSave = function(elems) {
+            if (('' + elems) == '[object HTMLBRElement]') {
+                return;
+            } // пропускаем <br/>
+            if (('' + elems.tagName) === 'undefined') {
+                return;
+            } // пропускаем  неизвестные тэги
+            if (elems.getAttribute("delet_tag") != null) {
+                elems.remove();
+                return;
+            } // пропускаем тэг с атрибутом DeletTag
+            if (elems.tagName === 'HEAD' && elems.nextElementSibling.tagName === 'HEAD') {
+                // костыл удаление  пустого тэга HEAD (не понято почему он появляется)
+                elems.nextElementSibling.remove();
+            }
+            if (elems.getAttribute('ide_tree_id')) {
+                elems.removeAttribute('ide_tree_id');
+            }
+            if (elems.classList.contains('is_select_element_ide')) {
+                elems.classList.remove('is_select_element_ide');
+                if (elems.classList.length === 0) {
+                    elems.removeAttribute('class');
+                }
+            }
+            if (elems.childNodes) {
+                if (elems.childNodes.length > 0) {
+                    for (var i = 0; i < elems.childNodes.length; i++) {
+                        var SubElemt = elems.childNodes[i];
+                        parseDomBeforeSave(SubElemt);
+                    }
+                }
+            }
         }
     </script>
 </body>
