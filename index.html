@@ -477,6 +477,14 @@
                      }
                 }
             }
+            // инициализация атрибутов
+            if (node['attrList']) {
+                for (prop of node['attrList']) {
+                     for (key in prop) {
+                        newElementDom.setAttribute(key, prop[key]);
+                     }
+                }
+            }
         };
 
 

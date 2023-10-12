@@ -26,6 +26,7 @@
             componentJsLib: 'Component/cmpButton/lib.js',    // путь к JS библитоеки
             componentCssLib: 'Component/cmpButton/lib.css',  // путь к CSS библиотеки
             classList: ['test_cls'],                                                   // инициализация класса (CSS)
-            styleList: [{left:55, top:55, width:300, height:32, position:'absolute'}]  // инициирование стиля
+            styleList: [{left:55, top:55, width:300, height:32, position:'absolute'}], // инициирование стиля
+            attrList: [{width:300, height:32}]               // инициирование атрибутов
         }
 ]
