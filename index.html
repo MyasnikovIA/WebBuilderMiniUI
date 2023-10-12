@@ -82,7 +82,7 @@
             <input class="mini-textbox" width="100%" id="foundTreeComponent" onenter="onKeyEnterFoundTreeComponent"/>
             <ul id="tree2"
                 class="mini-tree"
-                url="component.txt"
+                url="Component/index.txt"
                 height="90%"
                 showTreeIcon="true"
                 textField="text"
@@ -348,11 +348,11 @@
             sub['children'] = [];
             sub['isLeaf'] = true;
             // обработка детей
-            if (elems.childNodes) {
+            if (elems.childNodes && elems.childNodes.length > 0) {
                 if (elems.childNodes.length > 0) {
                     for (var i = 0; i < elems.childNodes.length; i++) {
                         var SubElemt = elems.childNodes[i]
-                        ReadHtmlElement(SubElemt, sub["children"]);
+                        ReadHtmlElement(SubElemt, sub['children']);
                     }
                 } else {
                    var content = document.createTextNode("<YOUR_CONTENT>");
@@ -390,34 +390,77 @@
 
         var newElementDom = null;
         function onBeforeNodeSelectComponent(event) {
+            var innerText = '';
             var tree = event.sender;
             var node = event.node;
             if (tree.hasChildren(node)) {
                 event.cancel = true;
                 return;
             }
-            newElementDom = document.createElement(node['Component']['tagName']);
-            newElementDom.innerText = node['Component']['innerText'];
-            // инициализация атрибутов
-            if (node['Component']['attrList']) {
-                for (prop of node['Component']['attrList']) {
-                     for (key in prop) {
-                        newElementDom.setAttribute(key, prop[key]);
-                     }
+            if (node['tagName']) {
+                newElementDom = document.createElement(node['tagName']);
+            } else {
+                newElementDom = document.createElement('div');
+            }
+            if (node['innerText']) {
+                innerText = node['innerText'];
+            } else {
+                innerText = node['text'];
+            }
+            if (node['componentHtml']) {
+                $.ajax({
+                    url: node['componentHtml'],
+                    type: 'GET',
+                    async: false,
+                    success: function(data){
+                        innerText = data;
+                    }, error: function(error){
+                        console.log('error is: ' + error + '\n');
+                        return error;
+                    }
+               });
+            }
+            newElementDom.innerHTML = innerText
+            if (node['cmptype']) {
+                newElementDom.setAttribute('cmptype', node['cmptype']);
+            }
+            if (newElementDom.children.length === 1) {
+                var innerText = newElementDom.children[0].getInnerHTML();
+                for ( var key of newElementDom.children[0].getAttributeNames()) {
+                    newElementDom.setAttribute(key, newElementDom.children[0].getAttribute(key));
+                }
+                newElementDom.innerHTML = innerText;
+            }
+            if (node['componentJsLib']) {
+                var headElement =  ContentEditorDocume.document.getElementsByTagName('html')[0].getElementsByTagName('head')[0];
+                var needAddLib = true;
+                for ( var el of headElement.children) {
+                    if (el.getAttribute('src') && el.getAttribute('src') === node['componentJsLib']) {
+                        needAddLib = false;
+                        break
+                    }
+                }
+                if (needAddLib) {
+                    var script_ide = document.createElement('script');
+                    script_ide.src =  node['componentJsLib'];
+                    script_ide.type = 'text/javascript';
+                    headElement.appendChild(script_ide);
                 }
             }
-            // инициализация классов стилей
-            if (node['Component']['classList']) {
-                for (classOne of node['Component']['classList']) {
-                    newElementDom.classList.add(classOne)
+            if (node['componentCssLib']) {
+                var headElement =  ContentEditorDocume.document.getElementsByTagName('html')[0].getElementsByTagName('head')[0];
+                var needAddLib = true;
+                for ( var el of headElement.children) {
+                    if (el.getAttribute('href') && el.getAttribute('href') === node['componentCssLib']) {
+                        needAddLib = false;
+                        break
+                    }
                 }
-            }
-            // инициализация стилей
-            if (node['Component']['styleList']) {
-                for (prop of node['Component']['styleList']) {
-                     for (key in prop) {
-                        newElementDom.style[key] = prop[key];
-                     }
+                if (needAddLib) {
+                    var style_ide = document.createElement('link');
+                    style_ide.href = node['componentCssLib'];
+                    style_ide.rel = 'stylesheet';
+                    headElement.appendChild(style_ide);
                 }
             }
         };

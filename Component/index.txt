@@ -1,0 +1,29 @@
+[
+	{id: "html", text: "HTML"},                  // Группа компонентов HTML
+	{id: "forms", text: "Forms", pid: "HTML"},   // Группа компонентов для формы
+
+        // Описание элемента "Кнопка"
+        {   id: 'button',
+            pid: 'html',
+            tagName: 'button',                               // тэк элемента, который создается сначала
+            text: 'Button',                                  // название в дереве
+            isVisibleComponent: true,                        // визуальный компонент
+            innerText: 'Botton',                             // Текст внутри тэга
+            editWindowComponent: 'editHtml.html',            // окно редактирования компонента
+            editWindowInnerHtml: 'editInnertHtml.html',      // окно редактирования компонента
+        },
+
+        // Описание элемента "Кнопка"
+        {   id: 'button',
+            pid: 'html',
+            tagName: 'div',                                  // тэк элемента, который создается сначала
+            text: 'cmpButton',                               // название в дереве
+            cmptype: 'button',
+            isVisibleComponent: true,                        // визуальный компонент
+            editWindowComponent: 'editHtml.html',            // окно редактирования компонента
+            editWindowInnerHtml: 'editInnertHtml2.html',     // окно редактирования компонента
+            componentHtml: 'Component/cmpButton/index.html', // путь к компоненту
+            componentJsLib: 'Component/cmpButton/lib.js',    // путь к JS библитоеки
+            componentCssLib: 'Component/cmpButton/lib.css'   // путь к CSS библиотеки
+        }
+]
