@@ -463,6 +463,20 @@
                     headElement.appendChild(style_ide);
                 }
             }
+            // инициализация классов стилей
+            if (node['classList']) {
+                for (classOne of node['classList']) {
+                    newElementDom.classList.add(classOne)
+                }
+            }
+            // инициализация стилей
+            if (node['styleList']) {
+                for (prop of node['styleList']) {
+                     for (key in prop) {
+                        newElementDom.style[key] = prop[key];
+                     }
+                }
+            }
         };
 
 
@@ -670,11 +684,10 @@
             var cmptype = clickElement.getAttribute('cmptype');
             if (cmptype) {
                 for (var component of dataListComponent) {
-                    if (!component['Component']) continue;
-                    if (!component['Component']['cmptype']) continue;
-                    if (component['Component']['cmptype'] === cmptype) {
-                        if (component['Component']['editWindowComponent']) {
-                            urlEditPage = component['Component']['editWindowComponent'];
+                    if (!component['cmptype']) continue;
+                    if (component['cmptype'] === cmptype) {
+                        if (component['editWindowComponent']) {
+                            urlEditPage = component['editWindowComponent'];
                         }
                         break;
                     }
@@ -683,19 +696,20 @@
                // Получение окна редактирования по тэгу элемента
                var tagName = clickElement.tagName.toLocaleLowerCase()
                for (var component of dataListComponent) {
-                    if (!component['Component']) continue;
-                    if (!component['Component']['tagName']) continue;
-                    if (component['Component']['cmptype']) continue;
-                    if (component['Component']['tagName'] === tagName) {
-                        if (component['Component']['editWindowComponent']) {
-                            urlEditPage = component['Component']['editWindowComponent'];
-                        }
-                        break;
-                    }
+                   if (!component['tagName']) continue;
+                   if (component['cmptype']) continue;
+                   if (component['tagName'] === tagName) {
+                       if (component['editWindowComponent']) {
+                           urlEditPage = component['editWindowComponent'];
+                       }
+                       break;
+                   }
                }
             }
             var win = mini.get('win1');
             win.setUrl(urlEditPage);
+            var rect = document.body.getBoundingClientRect();
+            mini.setStyle(win.el, 'width: ' + (rect.width * 0.8) + 'px; height:' + (rect.height * 0.8) + 'px;');
             win.show();
             win.getIFrameEl().onload = function() {
                 var iframe = win.getIFrameEl();
@@ -716,33 +730,33 @@
             var cmptype = clickElement.getAttribute('cmptype');
             if (cmptype) {
                 for (var component of dataListComponent) {
-                    if (!component['Component']) continue;
-                    if (!component['Component']['cmptype']) continue;
-                    if (component['Component']['cmptype'] === cmptype) {
-                        if (component['Component']['editWindowInnerHtml']) {
-                            urlEditPage = component['Component']['editWindowInnerHtml'];
+                    if (!component['cmptype']) continue;
+                    if (component['cmptype'] === cmptype) {
+                        if (component['editWindowInnerHtml']) {
+                            urlEditPage = component['editWindowInnerHtml'];
                         }
                         break;
                     }
                 }
             } else {
-               // Получение окна редактирования по тэгу элемента
-               var tagName = clickElement.tagName.toLocaleLowerCase()
-               for (var component of dataListComponent) {
-                    if (!component['Component']) continue;
-                    if (!component['Component']['tagName']) continue;
-                    if (component['Component']['cmptype']) continue;
-                    if (component['Component']['tagName'] === tagName) {
-                        if (component['Component']['editWindowInnerHtml']) {
-                            urlEditPage = component['Component']['editWindowInnerHtml'];
+                // Получение окна редактирования по тэгу элемента
+                var tagName = clickElement.tagName.toLocaleLowerCase()
+                for (var component of dataListComponent) {
+                    if (!component) continue;
+                    if (!component['tagName']) continue;
+                    if (component['cmptype']) continue;
+                    if (component['tagName'] === tagName) {
+                        if (component['editWindowInnerHtml']) {
+                            urlEditPage = component['editWindowInnerHtml'];
                         }
                         break;
                     }
-               }
+                }
             }
             var win = mini.get('win1');
             win.setUrl(urlEditPage);
-            mini.setStyle(win.el, 'width: 800px; height: 400px;');
+            var rect = document.body.getBoundingClientRect();
+            mini.setStyle(win.el, 'width: ' + (rect.width * 0.8) + 'px; height:' + (rect.height * 0.8) + 'px;');
             win.show();
             win.getIFrameEl().onload = function(){
                 var iframe = win.getIFrameEl();
