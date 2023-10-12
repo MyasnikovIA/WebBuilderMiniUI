@@ -16,17 +16,17 @@
         // Описание элемента "Кнопка"
         {   id: 'button',
             pid: 'html',
-            tagName: 'cmp-Tag',                              // тэк элемента, который создается сначала
-            text: 'cmpButton',                               // название в дереве
+            tagName: 'cmp-Tag',                                                        // тэк элемента, который создается сначала
+            text: 'cmpButton',                                                         // название в дереве
             cmptype: 'button',
-            isVisibleComponent: true,                        // визуальный компонент
-            editWindowComponent: 'editHtml.html',            // окно редактирования компонента
-            editWindowInnerHtml: 'editInnertHtml.html',      // окно редактирования компонента
-            componentHtml: 'Component/cmpButton/index.html', // путь к компоненту
-            componentJsLib: 'Component/cmpButton/lib.js',    // путь к JS библитоеки
-            componentCssLib: 'Component/cmpButton/lib.css',  // путь к CSS библиотеки
+            isVisibleComponent: true,                                                  // визуальный компонент
+            editWindowComponent: 'editHtml.html',                                      // окно редактирования компонента
+            editWindowInnerHtml: 'editInnertHtml.html',                                // окно редактирования компонента
+            componentHtml: 'Component/cmpButton/index.html',                           // путь к компоненту
+            componentJsLib: 'Component/cmpButton/lib.js',                              // путь к JS библитоеки
+            componentCssLib: 'Component/cmpButton/lib.css',                            // путь к CSS библиотеки
             classList: ['test_cls'],                                                   // инициализация класса (CSS)
             styleList: [{left:55, top:55, width:300, height:32, position:'absolute'}], // инициирование стиля
-            attrList: [{width:300, height:32}]               // инициирование атрибутов
+            attrList: [{width:300, height:32}]                                         // инициирование атрибутов
         }
 ]
