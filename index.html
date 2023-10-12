@@ -15,6 +15,7 @@
                         <a class="mini-menubutton" plain="true" menu="#fileMenu">File</a>
                         <a class="mini-menubutton" plain="true" menu="#editMenu">Edit</a>
                         <a class="mini-menubutton" plain="true" onclick="debugger">debugger</a>
+                        <a class="mini-menubutton" plain="true" onclick="getHtmlConsole">getHtmlConsole</a>
                     </td>
                 </table>
             </div>
@@ -232,7 +233,6 @@
                 ContentEditorDocume = (ContentEditorDocumeIframe.contentWindow) ? ContentEditorDocumeIframe.contentWindow : (ContentEditorDocumeIframe.contentDocument.document) ? ContentEditorDocumeIframe.contentDocument.document : ContentEditorDocumeIframe.contentDocument;
                 ContentEditorDocume.document.designMode = 'off';
                 ContentEditorDocume.document.write('<div>HELLO_WORLD</div>');
-
                 var style_ide = document.createElement('link');
                 style_ide.setAttribute('delet_tag','1');
                 style_ide.href = 'app_ide.css';
@@ -294,9 +294,6 @@
                 ContentEditorDocume.document.designMode = 'on';
             };
         }
-
-
-
         function rebuildDomTree() {
             var tree1 = mini.get("tree1");
             tree1.setData([]);
@@ -326,6 +323,10 @@
             if (elems.getAttribute("delet_tag") != null) {
                 return;
             } // пропускаем тэг с атрибутом DeletTag
+            if (elems.tagName === 'HEAD' && elems.nextElementSibling.tagName === 'HEAD') {
+                // костыл удаление  пустого тэга HEAD (не понято почему он появляется)
+                elems.nextElementSibling.remove();
+            }
             var sub = {};
             if (elems.tagName != 'HTML') {
                 ReadHtmlElementId++;
@@ -722,6 +723,12 @@
             }
             win.hide();
             win.el.remove();
+        }
+
+        function getHtmlConsole() {
+             debugger
+            console.log(ContentEditorDocume.document)
+
         }
     </script>
 </body>
