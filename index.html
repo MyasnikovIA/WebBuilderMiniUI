@@ -1,4 +1,5 @@
 <html>
+    <html lang="ru">
     <head>
         <title>WebBuilder MiniUI</title>
         <script src="scripts/boot.js" type="text/javascript"></script>
@@ -115,6 +116,7 @@
 		    </ul>
 	    </li>
         <li class="separator"></li>
+        <li onclick="onSettingsWin();">Settings</li>
 	    <li iconCls="icon-open" >Clear</li>
     </ul>
 
@@ -198,6 +200,17 @@
             <input type='button' value='Cancel' style='vertical-align:middle;' onclick="onModalWinClose('cancel', this);"/>
         </div>
     </div>
+    <div id="win2"
+         class="mini-window"
+         title=""
+         showMaxButton="true"
+         showToolbar="true"
+         showFooter="true"
+         showModal="false"
+         allowResize="false"
+         allowDrag="true"
+        >
+    </div>
 
 
     <script type="text/javascript">
@@ -243,6 +256,17 @@
                         return;
                     }
                     if (newElementDom != null) {
+                         var tree2 = mini.get('tree2');
+                         var data = tree2.getSelected();
+                         if (data['tagParent']) {
+                             var tagParent = clickElement.tagName.toLocaleLowerCase();
+                             if (!data['tagParent'].includes(tagParent)) {
+                                 alert('Tag "' + data['tagName'] + '" can only be placed in ' + JSON.stringify(data['tagParent']));
+                                 tree2.selectNode(null);
+                                 newElementDom = null;
+                                 return;
+                             }
+                         }
                          var addEl = newElementDom.cloneNode(true);
                          clickElement.appendChild(addEl);
                          rebuildDomTree();
@@ -257,7 +281,10 @@
                     tree1.focusRow()
                     clearSelectClass();
                     clickElement.classList.add('is_select_element_ide')
-                    clickElement.addEventListener('keydown', keyEvent, false);
+                    // clickElement.addEventListener('keydown', keyEvent, false);
+                    clickElement.addEventListener('keydown', keyEvent, true);
+                    //  console.log(getEventListeners, getEventListeners(clickElement) );
+
                     var contextMenuElement = mini.get('contextMenuElement');
                     contextMenuElement.hide();
                     $(clickElement).bind('contextmenu', function (e) {
@@ -361,9 +388,9 @@
             }
         }
 
-         var selectNodeId = null;
-         var selectObjectElement = null;
-         function onBeforeNodeSelectDom(e) {
+        var selectNodeId = null;
+        var selectObjectElement = null;
+        function onBeforeNodeSelectDom(e) {
             var tree = e.sender;
             var node = e.node;
             if (!node['id']) {
@@ -374,16 +401,27 @@
             selectObjectElement = node['ObjectElement'];
             clickElement = selectObjectElement;
             if (newElementDom != null) {
-                 var addEl = newElementDom.cloneNode(true);
-                 selectObjectElement.appendChild(addEl);
-                 rebuildDomTree();
-                 clickElement = addEl;
-                 newElementDom = null;
-                 var tree2 = mini.get('tree2');
-                 tree2.selectNode(null);
+                var addEl = newElementDom.cloneNode(true);
+                var tree2 = mini.get('tree2');
+                var data = tree2.getSelected();
+                if (data['tagParent']) {
+                    var tagParent = clickElement.tagName.toLocaleLowerCase();
+                    if (!data['tagParent'].includes(tagParent)) {
+                        alert('Tag "' + data['tagName'] + '" can only be placed in ' + JSON.stringify(data['tagParent']));
+                        tree2.selectNode(null);
+                        newElementDom = null;
+                        return;
+                    }
+                }
+                selectObjectElement.appendChild(addEl);
+                rebuildDomTree();
+                clickElement = addEl;
+                newElementDom = null;
+                var tree2 = mini.get('tree2');
+                tree2.selectNode(null);
             }
             clearSelectClass();
-            selectObjectElement.classList.add('is_select_element_ide')
+            selectObjectElement.classList.add('is_select_element_ide');
             selectObjectElement.addEventListener('keydown', keyEvent, false);
         };
 
@@ -404,8 +442,6 @@
             }
             if (node['innerText']) {
                 innerText = node['innerText'];
-            } else {
-                innerText = node['text'];
             }
             if (node['componentHtml']) {
                 $.ajax({
@@ -420,7 +456,7 @@
                     }
                });
             }
-            newElementDom.innerHTML = innerText
+            newElementDom.innerHTML = innerText;
             if (node['cmptype']) {
                 newElementDom.setAttribute('cmptype', node['cmptype']);
             }
@@ -432,7 +468,7 @@
                 newElementDom.innerHTML = innerText;
             }
             if (node['componentJsLib']) {
-                var headElement =  ContentEditorDocume.document.getElementsByTagName('html')[0].getElementsByTagName('head')[0];
+                var headElement = ContentEditorDocume.document.getElementsByTagName('html')[0].getElementsByTagName('head')[0];
                 var needAddLib = true;
                 for ( var el of headElement.children) {
                     if (el.getAttribute('src') && el.getAttribute('src') === node['componentJsLib']) {
@@ -442,7 +478,7 @@
                 }
                 if (needAddLib) {
                     var script_ide = document.createElement('script');
-                    script_ide.src =  node['componentJsLib'];
+                    script_ide.src = node['componentJsLib'];
                     script_ide.type = 'text/javascript';
                     headElement.appendChild(script_ide);
                 }
@@ -778,9 +814,11 @@
             var win = mini.get('win1');
             if (action === 'ok') {
                  var iframe = win.getIFrameEl();
-                 var data = iframe.contentWindow.GetData();
-                 data = mini.clone(data);
-                 rebuildDomTree();    // перестраиваем Dom дерево
+                 if (iframe.contentWindow['GetData']) {
+                     var data = iframe.contentWindow.GetData();
+                     data = mini.clone(data);
+                     rebuildDomTree();    // перестраиваем Dom дерево
+                 }
             }
             win.hide();
             win.el.remove();
@@ -823,6 +861,19 @@
                 }
             }
         }
+        function onSettingsWin() {
+            var urlEditPage = 'settingsIde.html';
+            var win = mini.get('win1');
+            win.setUrl(urlEditPage);
+            var rect = document.body.getBoundingClientRect();
+            mini.setStyle(win.el, 'width: ' + (rect.width * 0.8) + 'px; height:' + (rect.height * 0.8) + 'px;');
+            win.show();
+            win.getIFrameEl().onload = function(){
+                var maskLoad = win.el.querySelector('[class="mini-mask"]');
+                if (maskLoad) maskLoad.remove();
+            }
+        }
+
     </script>
 </body>
 </html>

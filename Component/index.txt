@@ -1,25 +1,181 @@
 [
 	{id: "html", text: "HTML"},                  // Группа компонентов HTML
-	{id: "forms", text: "Forms", pid: "HTML"},   // Группа компонентов для формы
+	{id: "d3", text: "D3", pid: "HTML"},   // Группа компонентов для формы
+
+        // Описание элемента "Кнопка"
+        {   id: 'span',
+            pid: 'html',
+            tagName: 'span',                                 // тэк элемента, который создается сначала
+            text: 'span',                                    // название в дереве
+            innerText: 'span',                               // Текст внутри тэга
+            editWindowComponent: 'editHtml.html',            // окно редактирования компонента
+            editWindowInnerHtml: 'editInnertHtml.html',      // окно редактирования компонента
+        },
+
+
 
         // Описание элемента "Кнопка"
         {   id: 'button',
             pid: 'html',
             tagName: 'button',                               // тэк элемента, который создается сначала
             text: 'Button',                                  // название в дереве
-            isVisibleComponent: true,                        // визуальный компонент
             innerText: 'Botton',                             // Текст внутри тэга
             editWindowComponent: 'editHtml.html',            // окно редактирования компонента
             editWindowInnerHtml: 'editInnertHtml.html',      // окно редактирования компонента
         },
 
+
+
+        // Описание элемента "ввод"
+        {   id: 'input',
+            pid: 'html',
+            tagName: 'input',                               // тэк элемента, который создается сначала
+            text: 'input',                                  // название в дереве
+            innerText: '',                                  // Текст внутри тэга
+            editWindowComponent: 'editHtml.html',           // окно редактирования компонента
+            editWindowInnerHtml: 'editInnertHtml.html',     // окно редактирования компонента
+        },
+
+
+
+        // Описание элемента "ввод"
+        {   id: 'img',
+            pid: 'html',
+            tagName: 'img',                               // тэк элемента, который создается сначала
+            text: 'Image',                                  // название в дереве
+            innerText: '',                                  // Текст внутри тэга
+            editWindowComponent: 'editHtml.html',           // окно редактирования компонента
+            editWindowInnerHtml: 'editInnertHtml.html',     // окно редактирования компонента
+        },
+
+
+
+        // Описание элемента "ввод"
+        {   id: 'style',
+            pid: 'html',
+            tagName: 'style',                               // тэк элемента, который создается сначала
+            text: 'Style',                                  // название в дереве
+            innerText: '',                                  // Текст внутри тэга
+            editWindowComponent: 'editHtml.html',           // окно редактирования компонента
+            editWindowInnerHtml: 'editInnertHtml.html',     // окно редактирования компонента
+        },
+
+
+
+        // Описание элемента "ввод"
+        {   id: 'script',
+            pid: 'html',
+            tagName: 'script',                               // тэк элемента, который создается сначала
+            text: 'Script',                                  // название в дереве
+            innerText: '',                                  // Текст внутри тэга
+            editWindowComponent: 'editHtml.html',           // окно редактирования компонента
+            editWindowInnerHtml: 'editInnertHtml.html',     // окно редактирования компонента
+        },
+
+
+
+        // Описание элемента "ввод"
+        {   id: 'video',
+            pid: 'html',
+            tagName: 'video',                               // тэк элемента, который создается сначала
+            text: 'Video',                                  // название в дереве
+            innerText: '',                                  // Текст внутри тэга
+            editWindowComponent: 'editHtml.html',           // окно редактирования компонента
+            editWindowInnerHtml: 'editInnertHtml.html',     // окно редактирования компонента
+        },
+
+
+
+        // Описание элемента "ввод"
+        {   id: 'table_group',
+            pid: 'html',
+            tagName: 'table',                               // тэк элемента, который создается сначала
+            text: 'Table',                                  // название в дереве
+        },
+
+
+
+        // Описание элемента "ввод"
+        {   id: 'table',
+            pid: 'table_group',
+            tagName: 'table',                               // тэк элемента, который создается сначала
+            text: 'Table',                                  // название в дереве
+            editWindowComponent: 'editHtml.html',           // окно редактирования компонента
+            editWindowInnerHtml: 'editInnertHtml.html',     // окно редактирования компонента
+            componentHtml: 'Component/table/index.html'     // путь к компоненту
+        },
+
+
+
+        // Описание элемента "ввод"
+        {   id: 'thead',
+            pid: 'table_group',
+            tagName: 'thead',                               // тэк элемента, который создается сначала
+            tagParent: ['table'],                           // родительсктй тэг
+            text: 'THead',                                  // название в дереве
+            editWindowComponent: 'editHtml.html',           // окно редактирования компонента
+            editWindowInnerHtml: 'editInnertHtml.html',     // окно редактирования компонента
+        },
+
+
+
+        // Описание элемента "ввод"
+        {   id: 'tbody',
+            pid: 'table_group',
+            tagName: 'tbody',                               // тэк элемента, который создается сначала
+            tagParent: ['table'],                           // родительсктй тэг
+            text: 'TBody',                                  // название в дереве
+            editWindowComponent: 'editHtml.html',           // окно редактирования компонента
+            editWindowInnerHtml: 'editInnertHtml.html',     // окно редактирования компонента
+        },
+
+
+
+        // Описание элемента "ввод"
+        {   id: 'tfoot',
+            pid: 'table_group',
+            tagName: 'tfoot',                               // тэк элемента, который создается сначала
+            tagParent: ['table'],                           // родительсктй тэг
+            text: 'TFoot',                                  // название в дереве
+            editWindowComponent: 'editHtml.html',           // окно редактирования компонента
+            editWindowInnerHtml: 'editInnertHtml.html',     // окно редактирования компонента
+        },
+
+
+
+        // Описание элемента "ввод"
+        {   id: 'tr',
+            pid: 'table_group',
+            tagName: 'tr',                                  // тэк элемента, который создается сначала
+            tagParent: ['tfoot','tbody','thead','table'],   // родительсктй тэг
+            text: 'Tr',                                     // название в дереве
+            editWindowComponent: 'editHtml.html',           // окно редактирования компонента
+            editWindowInnerHtml: 'editInnertHtml.html',     // окно редактирования компонента
+            componentHtml: 'Component/tr/index.html'        // путь к компоненту
+        },
+
+
+
+        // Описание элемента "ввод"
+        {   id: 'td',
+            pid: 'table_group',
+            tagName: 'td',                                  // тэк элемента, который создается сначала
+            tagParent: ['tr'],                              // родительсктй тэг
+            text: 'Td',                                     // название в дереве
+            innerText: '---',                               // Текст внутри тэга
+            editWindowComponent: 'editHtml.html',           // окно редактирования компонента
+            editWindowInnerHtml: 'editInnertHtml.html',     // окно редактирования компонента
+        },
+
+
+
+
         // Описание элемента "Кнопка"
         {   id: 'button',
-            pid: 'html',
-            tagName: 'cmp-Tag',                                                        // тэк элемента, который создается сначала
+            pid: 'd3',
+            tagName: 'div',                                                        // тэк элемента, который создается сначала
             text: 'cmpButton',                                                         // название в дереве
             cmptype: 'button',
-            isVisibleComponent: true,                                                  // визуальный компонент
             editWindowComponent: 'editHtml.html',                                      // окно редактирования компонента
             editWindowInnerHtml: 'editInnertHtml.html',                                // окно редактирования компонента
             componentHtml: 'Component/cmpButton/index.html',                           // путь к компоненту
@@ -29,4 +185,5 @@
             styleList: [{left:55, top:55, width:300, height:32, position:'absolute'}], // инициирование стиля
             attrList: [{width:300, height:32}]                                         // инициирование атрибутов
         }
+
 ]
