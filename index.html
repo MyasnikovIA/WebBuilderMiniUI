@@ -466,11 +466,11 @@
         function deleteElementFromDom() {
             var tree1 = mini.get('tree1');
             var node = tree1.getSelectedNode();
-            if (node.ObjectElement.tagName === 'BODY' || node.ObjectElement.tagName === 'HEAD') {
-               return;
-            }
             if (node['ObjectElement']) {
-                 node['ObjectElement'].remove();
+                if (node['ObjectElement']['tagName'] === 'BODY' || node['ObjectElement']['tagName'] === 'HEAD') {
+                   return;
+                }
+                node['ObjectElement'].remove();
             }
             // tree1.removeNode(node);
             rebuildDomTree();
