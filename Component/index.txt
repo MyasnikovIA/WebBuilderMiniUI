@@ -15,9 +15,9 @@
         // Описание элемента "Кнопка"
         {   id: 'span',
             pid: 'html',
-            tagName: 'span',                                 // тэк элемента, который создается сначала
-            text: 'Span',                                    // название в дереве
-            innerText: 'span',                               // Текст внутри тэга
+            tagName: 'span',                                          // тэк элемента, который создается сначала
+            text: 'Span',                                             // название в дереве
+            innerText: 'span',                                        // Текст внутри тэга
             editWindowComponent: 'EditPage/editHtml.html',            // окно редактирования компонента
             editWindowInnerHtml: 'EditPage/editInnertHtml.html',      // окно редактирования компонента
         },

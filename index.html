@@ -281,10 +281,9 @@
                     tree1.focusRow()
                     clearSelectClass();
                     clickElement.classList.add('is_select_element_ide')
-                    // clickElement.addEventListener('keydown', keyEvent, false);
-                    clickElement.addEventListener('keydown', keyEvent, true);
-                    //  console.log(getEventListeners, getEventListeners(clickElement) );
-
+                    if (ContentEditorDocume.document.designMode !== 'on') {
+                        clickElement.addEventListener('keydown', keyEvent, false);
+                    }
                     var contextMenuElement = mini.get('contextMenuElement');
                     contextMenuElement.hide();
                     $(clickElement).bind('contextmenu', function (e) {
@@ -422,7 +421,9 @@
             }
             clearSelectClass();
             selectObjectElement.classList.add('is_select_element_ide');
-            selectObjectElement.addEventListener('keydown', keyEvent, false);
+            if (ContentEditorDocume.document.designMode !== 'on') {
+                selectObjectElement.addEventListener('keydown', keyEvent, false);
+            }
         };
 
 
@@ -660,6 +661,7 @@
                 deleteElementFromDom();
                 rebuildDomTree();
             } else if ([40, 39, 38, 37].includes(+event.keyCode)) { // управление курсором
+                 if (selectElement.tagName  === 'BODY') return;
                  var rect = clickElement.getBoundingClientRect();
                  if (selectElement.style.top === '')  selectElement.style.top = rect.top;
                  if (selectElement.style.left === '')  selectElement.style.left = rect.left;
@@ -830,7 +832,7 @@
             win.el.remove();
         }
 
-        // Выгрузка результата 
+        // Выгрузка результата
         function getHtmlConsole() {
             var TmpElementSrc = ContentEditorDocume.document.getElementsByTagName('html')[0].cloneNode(true);
             parseDomBeforeSave(TmpElementSrc); // Удаление тэгов и атрибутов используемых IDE
@@ -930,7 +932,7 @@
             }
         }
         function onSettingsWin() {
-            var urlEditPage = 'settingsIde.html';
+            var urlEditPage = 'EditPage/settingsIde.html';
             var win = mini.get('win1');
             win.setUrl(urlEditPage);
             var rect = document.body.getBoundingClientRect();
