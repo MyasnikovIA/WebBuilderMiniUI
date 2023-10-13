@@ -829,6 +829,8 @@
             win.hide();
             win.el.remove();
         }
+
+        // Выгрузка результата 
         function getHtmlConsole() {
             var TmpElementSrc = ContentEditorDocume.document.getElementsByTagName('html')[0].cloneNode(true);
             parseDomBeforeSave(TmpElementSrc); // Удаление тэгов и атрибутов используемых IDE
@@ -843,7 +845,6 @@
             win.show();
             win.getIFrameEl().onload = function() {
                 var iframe = win.getIFrameEl();
-                console.log('TmpElementSrc',TmpElementSrc);
                 var data = {clickElement: TmpElementSrc};
                 iframe.contentWindow.SetData(data);
                 iframe.contentWindow.SetFunctionExecuteRes(functResInp)
@@ -851,6 +852,7 @@
                 if (maskLoad) maskLoad.remove();
             }
         }
+
         // Обработка сохранения формы
         function functResInp(innerHtml) {
             console.log(innerHtml);
