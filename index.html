@@ -758,6 +758,7 @@
             win.show();
             win.getIFrameEl().onload = function() {
                 var iframe = win.getIFrameEl();
+                replaceEditTag(clickElement);
                 var data = {clickElement: clickElement};
                 iframe.contentWindow.SetData(data);
                 // Костыль
@@ -806,6 +807,7 @@
             win.show();
             win.getIFrameEl().onload = function(){
                 var iframe = win.getIFrameEl();
+                replaceEditTag(clickElement);
                 var data = {clickElement: clickElement};
                 iframe.contentWindow.SetData(data);
                 var maskLoad = win.el.querySelector('[class="mini-mask"]');
@@ -864,6 +866,17 @@
                                        .replaceAll('<' + component['tagName'] + '>', '\r<' + component['tagName'] + '>')
                                        .replaceAll('<' + component['tagName'] + '>', '<' + component['tagName'] + '>')
                                        .replaceAll('</' + component['tagName'] + '>', '</' + component['tagName'] + '>');
+            }
+        }
+        var replaceEditTag = function(elems) {
+            var tree2 = mini.get('tree2');
+            var dataListComponent = tree2.getDataView(); // получить список компонентов в виде грида (есть поле ссылки на родителя)
+            for (var component of dataListComponent) {
+                if (component['tagName'] === 'script') continue;
+                elems.innerHTML = elems.innerHTML
+                                       .replaceAll('><' + component['tagName'] + ' ', '>\r<' + component['tagName'] + ' ')
+                                       .replaceAll('></' + component['tagName'] + ' ', '>\r</' + component['tagName'] + ' ')
+                                       .replaceAll('></' + component['tagName'] + '>', '>\r</' + component['tagName'] + '>')
             }
         }
         var parseDomBeforeSave = function(elems) {
