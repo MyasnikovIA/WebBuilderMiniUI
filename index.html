@@ -860,9 +860,9 @@
             for (var component of dataListComponent) {
                 if (component['tagName'] === 'script') continue;
                 elems.innerHTML = elems.innerHTML.replaceAll('<' + component['tagName'] + ' ', '\r<' + component['tagName'] + ' ')
+                                       .replaceAll('></' + component['tagName'] + '>', '>\r</' + component['tagName'] + '>')
                                        .replaceAll('<' + component['tagName'] + '>', '\r<' + component['tagName'] + '>')
                                        .replaceAll('<' + component['tagName'] + '>', '<' + component['tagName'] + '>')
-                                       .replaceAll('></' + component['tagName'] + '>', '>\r</' + component['tagName'] + '>')
                                        .replaceAll('</' + component['tagName'] + '>', '</' + component['tagName'] + '>');
             }
         }
