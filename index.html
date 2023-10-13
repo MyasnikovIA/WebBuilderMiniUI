@@ -754,6 +754,7 @@
             win.setUrl(urlEditPage);
             var rect = document.body.getBoundingClientRect();
             mini.setStyle(win.el, 'width: ' + (rect.width * 0.8) + 'px; height:' + (rect.height * 0.8) + 'px;');
+            win.setTitle('');
             win.show();
             win.getIFrameEl().onload = function() {
                 var iframe = win.getIFrameEl();
@@ -801,6 +802,7 @@
             win.setUrl(urlEditPage);
             var rect = document.body.getBoundingClientRect();
             mini.setStyle(win.el, 'width: ' + (rect.width * 0.8) + 'px; height:' + (rect.height * 0.8) + 'px;');
+            win.setTitle('');
             win.show();
             win.getIFrameEl().onload = function(){
                 var iframe = win.getIFrameEl();
@@ -816,8 +818,10 @@
                  var iframe = win.getIFrameEl();
                  if (iframe.contentWindow['GetData']) {
                      var data = iframe.contentWindow.GetData();
-                     data = mini.clone(data);
-                     rebuildDomTree();    // перестраиваем Dom дерево
+                     if (data) {
+                         data = mini.clone(data);
+                         rebuildDomTree();    // перестраиваем Dom дерево
+                     }
                  }
             }
             win.hide();
@@ -826,7 +830,41 @@
         function getHtmlConsole() {
             var TmpElementSrc = ContentEditorDocume.document.getElementsByTagName('html')[0].cloneNode(true);
             parseDomBeforeSave(TmpElementSrc); // Удаление тэгов и атрибутов используемых IDE
-            console.log(TmpElementSrc.outerHTML);
+            delDomBeforeSave(TmpElementSrc);
+            replaceRbTag(TmpElementSrc);
+            var urlEditPage = 'EditPage/editInnertHtml.html';
+            var win = mini.get('win1');
+            win.setUrl(urlEditPage);
+            var rect = document.body.getBoundingClientRect();
+            mini.setStyle(win.el, 'width: ' + (rect.width * 0.8) + 'px; height:' + (rect.height * 0.8) + 'px;');
+            win.setTitle('Save');
+            win.show();
+            win.getIFrameEl().onload = function() {
+                var iframe = win.getIFrameEl();
+                console.log('TmpElementSrc',TmpElementSrc);
+                var data = {clickElement: TmpElementSrc};
+                iframe.contentWindow.SetData(data);
+                iframe.contentWindow.SetFunctionExecuteRes(functResInp)
+                var maskLoad = win.el.querySelector('[class="mini-mask"]');
+                if (maskLoad) maskLoad.remove();
+            }
+        }
+        // Обработка сохранения формы
+        function functResInp(innerHtml) {
+            console.log(innerHtml);
+        }
+
+        var replaceRbTag = function(elems) {
+            var tree2 = mini.get('tree2');
+            var dataListComponent = tree2.getDataView(); // получить список компонентов в виде грида (есть поле ссылки на родителя)
+            for (var component of dataListComponent) {
+                if (component['tagName'] === 'script') continue;
+                elems.innerHTML = elems.innerHTML.replaceAll('<' + component['tagName'] + ' ', '\r<' + component['tagName'] + ' ')
+                                       .replaceAll('<' + component['tagName'] + '>', '\r<' + component['tagName'] + '>')
+                                       .replaceAll('<' + component['tagName'] + '>', '<' + component['tagName'] + '>')
+                                       .replaceAll('></' + component['tagName'] + '>', '>\r</' + component['tagName'] + '>')
+                                       .replaceAll('</' + component['tagName'] + '>', '</' + component['tagName'] + '>');
+            }
         }
         var parseDomBeforeSave = function(elems) {
             if (('' + elems) == '[object HTMLBRElement]') {
@@ -835,10 +873,6 @@
             if (('' + elems.tagName) === 'undefined') {
                 return;
             } // пропускаем  неизвестные тэги
-            if (elems.getAttribute("delet_tag") != null) {
-                elems.remove();
-                return;
-            } // пропускаем тэг с атрибутом DeletTag
             if (elems.tagName === 'HEAD' && elems.nextElementSibling.tagName === 'HEAD') {
                 // костыл удаление  пустого тэга HEAD (не понято почему он появляется)
                 elems.nextElementSibling.remove();
@@ -854,9 +888,28 @@
             }
             if (elems.childNodes) {
                 if (elems.childNodes.length > 0) {
-                    for (var i = 0; i < elems.childNodes.length; i++) {
-                        var SubElemt = elems.childNodes[i];
+                    for (var SubElemt of elems.childNodes) {
                         parseDomBeforeSave(SubElemt);
+                    }
+                }
+            }
+        }
+        // удаление тэгов с атрибутами "delet_tag"
+        var delDomBeforeSave = function(elems) {
+            if (('' + elems) == '[object HTMLBRElement]') {
+                return;
+            } // пропускаем <br/>
+            if (('' + elems.tagName) === 'undefined') {
+                return;
+            } // пропускаем  неизвестные тэги
+            if (elems.getAttribute("delet_tag") != null) {
+                elems.remove();
+                return;
+            } // пропускаем тэг с атрибутом DeletTag
+            if (elems.childNodes) {
+                if (elems.childNodes.length > 0) {
+                    for (var SubElemt of elems.childNodes) {
+                        delDomBeforeSave(SubElemt);
                     }
                 }
             }
@@ -867,6 +920,7 @@
             win.setUrl(urlEditPage);
             var rect = document.body.getBoundingClientRect();
             mini.setStyle(win.el, 'width: ' + (rect.width * 0.8) + 'px; height:' + (rect.height * 0.8) + 'px;');
+            win.setTitle('Setting');
             win.show();
             win.getIFrameEl().onload = function(){
                 var maskLoad = win.el.querySelector('[class="mini-mask"]');

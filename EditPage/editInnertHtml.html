@@ -29,6 +29,7 @@
     var isChangeCode = false;
     var editor = ace.edit('editor');
     var beautify = ace.require('ace/ext/beautify');
+    var functRes = null;
     function SetData(data) {
         clickElement = data.clickElement;
         data.clickElement.classList.remove('is_select_element_ide');
@@ -43,12 +44,21 @@
             isChangeCode = true;
         });
     }
+    function SetFunctionExecuteRes(functResInp) {
+        debugger
+        functRes = functResInp;
+    }
     function GetData() {
         // var el = document.getElementById("editor");
         // el.env.editor.session.getValue()
-        clickElement.outerHTML = editor.getValue();
-        clickElement.classList.add('is_select_element_ide');
-        return {clickElement: clickElement};
+        var outerHTML=editor.getValue();
+        if (!functRes) {
+            clickElement.outerHTML = outerHTML;
+            clickElement.classList.add('is_select_element_ide');
+            return {clickElement: clickElement};
+        } else {
+            functRes(outerHTML);
+        }
     }
     editor.setTheme("ace/theme/twilight")
     editor.session.setMode("ace/mode/html")
