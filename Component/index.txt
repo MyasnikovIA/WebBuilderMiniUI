@@ -10,6 +10,7 @@
             innerText: 'form',                               // Текст внутри тэга
             editWindowComponent: 'EditPage/editHtml.html',            // окно редактирования компонента
             editWindowInnerHtml: 'EditPage/editInnertHtml.html',      // окно редактирования компонента
+            runScriptLib: "console.log('ADD component');",  // Pапускаемый скрипту при добавлении
         },
 
         // Описание элемента "Кнопка"

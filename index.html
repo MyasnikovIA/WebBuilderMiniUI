@@ -274,6 +274,15 @@
                          newElementDom = null;
                          var tree2 = mini.get('tree2');
                          tree2.selectNode(null);
+                         if (data['runScriptLib']) { // запускаем скрипт при добавлении компонента
+                             var scriptElm = document.createElement('script');
+                             scriptElm.setAttribute('delet_Scritp_tag','1');
+                             scriptElm.setAttribute('class', 'class-name');
+                             var inlineCode = document.createTextNode(data['runScriptLib']);
+                             scriptElm.appendChild(inlineCode);
+                             ContentEditorDocume.document.head.appendChild(scriptElm);
+                             ContentEditorDocume.document.head.querySelectorAll('[delet_scritp_tag="1"]')[0].remove();
+                         }
                     }
                     var idTree = clickElement.getAttribute('ide_tree_id');
                     var tree1 = mini.get('tree1');
